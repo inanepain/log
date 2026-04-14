@@ -1,0 +1,20 @@
+= Changelog: inanepain/log
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:description: Flexible PSR-3 logging implementation with support for multiple writers.
+:keywords: inanepain, inane, library, log, psr-3, logger, writer
+:revnumber: 0.1.0
+:revdate: 2026-04-14
+:copyright: Unlicense
+:experimental:
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: left
+:sectanchors:
+
+== History
+
+// include::./release/0.0.0.adoc[leveloffset=+2]
+include::./release/0.1.0.adoc[leveloffset=+2]

@@ -1,0 +1,11 @@
+= 0.1.0 (2026-04-13)
+:revnumber: 0.1.0
+:revdate: 2026-04-14
+
+* Setup development structure.
+* PSR-3 compatible Logger.
+* Writer interface and AbstractWriter for custom implementations.
+* `JsonFileWriter`: Rotated JSON file logging.
+* `StdoutWriter`: JSON logging to standard output.
+* `StderrorWriter`: JSON logging to standard error.
+* Level-based filtering (min/max levels) for each writer.

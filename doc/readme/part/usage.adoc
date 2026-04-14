@@ -1,0 +1,45 @@
+= Usage
+
+The `log` package provides a PSR-3 compatible logger that can delegate to multiple writers.
+
+== Basic Usage
+
+[source,php]
+----
+use Inane\Log\Logger;
+use Inane\Log\Writer\StdoutWriter;
+
+$logger = new Logger([
+    new StdoutWriter()
+]);
+
+$logger->info("Hello, World!");
+----
+
+== Multiple Writers and Filtering
+
+You can add multiple writers and set their log level limits.
+
+[source,php]
+----
+use Inane\Log\Logger;
+use Inane\Log\Writer\JsonFileWriter;
+use Inane\Log\Writer\StderrorWriter;
+use Psr\Log\LogLevel;
+
+$logger = new Logger();
+
+// All logs to a JSON file
+$logger->addWriter(new JsonFileWriter(__DIR__ . '/logs', 'app'));
+
+// Only errors and above to STDERR
+$logger->addWriter((new StderrorWriter())->setMinLevel(LogLevel::ERROR));
+
+$logger->error("Something went wrong!");
+----
+
+== Available Writers
+
+- `StdoutWriter`: Writes JSON logs to `STDOUT`.
+- `StderrorWriter`: Writes JSON logs to `STDERR`.
+- `JsonFileWriter`: Writes JSON logs to rotating files.

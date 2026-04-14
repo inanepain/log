@@ -1,0 +1,38 @@
+= inanepain/log image:./icon.png[title=inanepain/log,25]
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:description: Flexible PSR-3 logging implementation with support for multiple writers.
+:keywords: inanepain, inane, library, log, psr-3, logger, writer
+:copyright: Unlicense
+:homepage: https://github.com/inanepain/log
+:revnumber: 0.1.0
+:revdate: 2026-04-13
+:experimental:
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:sectanchors:
+:idprefix: topic-
+:idseparator: -
+:pkg-vendor: inanepain
+:pkg-name: log
+:pkg-id: {pkg-vendor}/{pkg-name}
+
+== image:./icon.png[title={pkg-id},25] {pkg-id}
+
+{description}
+
+:sectnums:
+
+<<<
+
+include::part/install.adoc[leveloffset=+1]
+
+<<<
+
+include::part/usage.adoc[leveloffset=+1]
+
+<<<
+
+include::part/link-github.adoc[leveloffset=+1]
