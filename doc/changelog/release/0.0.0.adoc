@@ -1,3 +1,5 @@
 = 0.2.0-dev (2026-04-xx)
 :revnumber: 0.2.0-dev
 :revdate: 2026-04-xx
+
+* *update*: rework filename workflow. Initial with no date which added on backup.

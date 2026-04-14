@@ -1,12 +1,32 @@
 <?php
 
+/**
+ * Inane: Log
+ *
+ * Logging.
+ *
+ * $Id$
+ * $Date$
+ *
+ * PHP version 8.5
+ *
+ * @author   Philip Michael Raab<philip@cathedral.co.za>
+ * @package  inanepain\log
+ * @category log
+ *
+ * @license  UNLICENSE
+ * @license  https://unlicense.org/UNLICENSE UNLICENSE
+ *
+ * _version_ $version
+ */
+
 declare(strict_types=1);
 
 namespace Inane\Log\Writer;
 
 use Inane\Log\AbstractWriter;
-
 use Inane\Stdlib\Json;
+
 use function clearstatcache;
 use function fclose;
 use function file_exists;
@@ -33,31 +53,6 @@ use const PHP_EOL;
  */
 class JsonFileWriter extends AbstractWriter {
     /**
-     * @var string Log directory
-     */
-    private string $dir;
-
-    /**
-     * @var string Base filename
-     */
-    private string $baseName;
-
-    /**
-     * @var int Max file size in bytes
-     */
-    private int $maxSizeBytes;
-
-    /**
-     * @var int Max number of log files to keep
-     */
-    private int $maxFiles;
-
-    /**
-     * @var string Date format for log filename
-     */
-    private string $dateFormat;
-
-    /**
      * Create writer
      *
      * @param string $dir
@@ -67,20 +62,31 @@ class JsonFileWriter extends AbstractWriter {
      * @param string $dateFormat
      */
     public function __construct(
-        string $dir = __DIR__ . '/../logs',
-        string $baseName = 'app',
-        int    $maxSizeBytes = 5_000_000,
-        int    $maxFiles = 5,
-        string $dateFormat = 'Y-m-d',
+        /**
+         * @var string Log directory
+         */
+        private string $dir = 'logs',
+        /**
+         * @var string Base filename
+         */
+        private string $baseName = 'output',
+        /**
+         * @var int Max file size in bytes
+         */
+        private int    $maxSizeBytes = 5_000_000,
+        /**
+         * @var int Max number of log files to keep
+         */
+        private int    $maxFiles = 5,
+        /**
+         * @var string Date format for log filename
+         */
+        private string $dateFormat = 'Y-m-d',
     ) {
-        $this->dir = $dir;
-        $this->baseName = $baseName;
-        $this->maxSizeBytes = $maxSizeBytes;
-        $this->maxFiles = $maxFiles;
-        $this->dateFormat = $dateFormat;
-
         if (!is_dir($this->dir)) {
-            mkdir($this->dir, 0777, true);
+            if (!mkdir($concurrentDirectory = $this->dir, 0777, true) && !is_dir($concurrentDirectory)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+            }
         }
     }
 
@@ -127,9 +133,7 @@ class JsonFileWriter extends AbstractWriter {
      * @return string
      */
     private function getLogFile(): string {
-        $date = gmdate($this->dateFormat);
-
-        return "{$this->dir}/{$this->baseName}-{$date}.log";
+        return "{$this->dir}/{$this->baseName}.log";
     }
 
     /**
@@ -149,6 +153,9 @@ class JsonFileWriter extends AbstractWriter {
         if (filesize($file) < $this->maxSizeBytes) {
             return;
         }
+
+        $date = gmdate($this->dateFormat);
+        rename($file, $file = str_replace('.log', "-{$date}.log", $file));
 
         // shift old logs
         for ($i = $this->maxFiles - 1; $i >= 1; $i--) {

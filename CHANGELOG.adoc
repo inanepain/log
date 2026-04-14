@@ -3,8 +3,8 @@
 :email: <philip@cathedral.co.za>
 :description: Flexible PSR-3 logging implementation with support for multiple writers.
 :keywords: inanepain, inane, library, log, psr-3, logger, writer
-:revnumber: 0.1.0
-:revdate: 2026-04-14
+:revnumber: 0.2.0-dev
+:revdate: 2026-xx-xx
 :copyright: Unlicense
 :experimental:
 :hide-uri-scheme:
@@ -16,7 +16,15 @@
 
 == History
 
-// include::./release/0.0.0.adoc[leveloffset=+2]
+:leveloffset: +2
+
+= 0.2.0-dev (2026-04-xx)
+:revnumber: 0.2.0-dev
+:revdate: 2026-04-xx
+
+* *update*: rework filename workflow. Initial with no date which added on backup.
+
+:leveloffset!:
 :leveloffset: +2
 
 = 0.1.0 (2026-04-13)
