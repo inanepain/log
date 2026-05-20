@@ -66,15 +66,13 @@ class Logger implements LoggerInterface {
     }
 
     /**
-     * Logs with an arbitrary level.
+     * Logs a message at the specified level.
      *
-     * @param mixed  $level
-     * @param string|\Stringable $message
-     * @param array  $context
+     * @param mixed              $level   The log level (e.g., 'error', 'warning', 'info').
+     * @param string|\Stringable $message The message to log.
+     * @param array              $context Additional context for the log message.
      *
      * @return void
-     *
-     * @throws \Psr\Log\InvalidArgumentException
      */
     public function log(mixed $level, string|\Stringable $message, array $context = []): void {
         foreach ($this->writers as $writer) {
