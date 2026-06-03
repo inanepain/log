@@ -1,4 +1,5 @@
 = inanepain/log image:./icon.png[title=inanepain/log,25]
+// tag::tagConfig[]
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
 :description: Flexible PSR-3 logging implementation with support for multiple writers.
@@ -18,6 +19,7 @@
 :pkg-vendor: inanepain
 :pkg-name: log
 :pkg-id: {pkg-vendor}/{pkg-name}
+// end::tagConfig[]
 
 == image:./icon.png[title={pkg-id},25] {pkg-id}
 
