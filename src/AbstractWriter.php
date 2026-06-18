@@ -43,7 +43,7 @@ abstract class AbstractWriter implements Writer {
     /**
      * @var array<string, int> PSR-3 levels to Monolog-like values
      */
-    protected const LEVELS = [
+    protected const array LEVELS = [
         LogLevel::EMERGENCY => 600,
         LogLevel::ALERT     => 550,
         LogLevel::CRITICAL  => 500,
