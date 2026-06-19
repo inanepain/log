@@ -6,8 +6,8 @@
 :keywords: inanepain, inane, library, log, psr-3, logger, writer
 :copyright: Unlicense
 :homepage: https://github.com/inanepain/log
-:revnumber: 0.1.0
-:revdate: 2026-04-13
+:revnumber: 0.1.1
+:revdate: 2026-06-19
 :experimental:
 :hide-uri-scheme:
 :icons: font
