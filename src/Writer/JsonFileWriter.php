@@ -20,11 +20,12 @@
  * _version_ $version
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Inane\Log\Writer;
 
 use Inane\Log\AbstractWriter;
+use Inane\Stdlib\Exception\JsonException;
 use Inane\Stdlib\Json;
 
 use function clearstatcache;
@@ -38,6 +39,8 @@ use function gmdate;
 use function is_dir;
 use function mkdir;
 use function rename;
+use function sprintf;
+use function str_replace;
 use function unlink;
 
 use const JSON_UNESCAPED_SLASHES;
@@ -65,29 +68,49 @@ class JsonFileWriter extends AbstractWriter {
         /**
          * @var string Log directory
          */
-        private string $dir = 'logs',
+        private readonly string $dir = 'logs',
         /**
          * @var string Base filename
          */
-        private string $baseName = 'output',
+        private readonly string $baseName = 'output',
         /**
          * @var int Max file size in bytes
          */
-        private int    $maxSizeBytes = 5_000_000,
+        private readonly int    $maxSizeBytes = 5_000_000,
         /**
          * @var int Max number of log files to keep
          */
-        private int    $maxFiles = 5,
+        private readonly int    $maxFiles = 5,
         /**
          * @var string Date format for log filename
          */
-        private string $dateFormat = 'Y-m-d',
+        private readonly string $dateFormat = 'Y-m-d',
     ) {
         if (!is_dir($this->dir)) {
             if (!mkdir($concurrentDirectory = $this->dir, 0777, true) && !is_dir($concurrentDirectory)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
             }
         }
+    }
+
+    public static function jsonEncode(array $entry): string {
+        $json = Json::encode($entry, [
+            'numeric' => true,
+            'flags'   => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+        ]);
+
+        if ($json === false) {
+            $json = Json::encode([
+                'ts'    => gmdate('c'),
+                'level' => 'ERROR',
+                'msg'   => 'Failed to encode log entry',
+            ], [
+                'numeric' => true,
+                'flags'   => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+            ]);
+        }
+
+        return $json;
     }
 
     /**
@@ -98,25 +121,14 @@ class JsonFileWriter extends AbstractWriter {
      * @param array  $context
      *
      * @return void
+     * @throws JsonException
      */
     protected function doWrite(mixed $level, string $message, array $context = []): void {
         $file = $this->getLogFile();
-
         $this->rotateIfNeeded($file);
 
         $entry = $this->buildEntry($level, $message, $context);
-
-        $json = Json::encode($entry, ['numeric' => true, 'flags' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE]);
-
-        if ($json === false) {
-            $json = Json::encode([
-                'ts'    => gmdate('c'),
-                'level' => 'ERROR',
-                'msg'   => 'Failed to encode log entry',
-            ], ['numeric' => true, 'flags' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE]);
-        }
-
-        $json .= PHP_EOL;
+        $json = self::jsonEncode($entry) . PHP_EOL;
 
         $fp = fopen($file, 'ab');
         if ($fp) {
@@ -158,7 +170,7 @@ class JsonFileWriter extends AbstractWriter {
         rename($file, $file = str_replace('.log', "-{$date}.log", $file));
 
         // shift old logs
-        for ($i = $this->maxFiles - 1; $i >= 1; $i--) {
+        for($i = $this->maxFiles - 1; $i >= 1; $i--) {
             $old = $file . '.' . $i;
             $new = $file . '.' . ($i + 1);
 
