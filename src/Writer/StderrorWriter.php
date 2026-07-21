@@ -32,7 +32,7 @@ use const PHP_EOL;
 use const STDERR;
 
 /**
- * Stderror Writer
+ * Standard Error Writer
  *
  * @package Inane\Log\Writer
  */
