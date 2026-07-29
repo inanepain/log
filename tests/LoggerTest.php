@@ -14,9 +14,28 @@ use Inane\Log\Writer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
+use ReflectionException;
 
+/**
+ * Unit tests for the Logger class to verify its logging functionality.
+ *
+ * This test suite ensures that the Logger class behaves as expected, particularly
+ * in scenarios involving multiple registered writers. Each test case validates specific
+ * behaviors to ensure the correctness of the Logger's implementation.
+ */
 #[CoversClass(Logger::class)]
 final class LoggerTest extends TestCase {
+    /**
+     * Tests that the logger correctly dispatches log messages to all registered writers.
+     *
+     * This method validates that when a log entry is created, it is passed to all writers
+     * configured in the logger. Each writer appends its respective details, like writer ID,
+     * log level, message, and context, to a shared record for verification.
+     *
+     * @return void
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException If any assertions fail during the test.
+     */
     public function testLoggerDispatchesToAllWriters(): void {
         $calls = [];
 
@@ -48,8 +67,22 @@ final class LoggerTest extends TestCase {
     }
 }
 
+/**
+ * Unit tests for the AbstractWriter class, focusing on log filtering by level
+ * and ensuring correct log entry formatting and context expansion.
+ */
 #[CoversClass(AbstractWriter::class)]
 final class AbstractWriterTest extends TestCase {
+    /**
+     * Tests the behavior of level filtering for logging, where only log messages
+     * between the specified minimum and maximum levels are allowed to pass. Validates
+     * that log messages outside the allowed range are filtered out and ensures correct
+     * behavior of helper methods for building log entries and message interpolation.
+     *
+     * @return void
+     *
+     * @throws ReflectionException If reflection operations fail during message interpolation.
+     */
     public function testMinAndMaxLevelFiltering(): void {
         $written = [];
 
@@ -84,6 +117,16 @@ final class AbstractWriterTest extends TestCase {
         $this->assertSame(123, $entry['extra']);
     }
 
+    /**
+     * Tests that an exception provided in the log context is expanded into a structured format.
+     *
+     * The method ensures that the exception details (class name, message, file, and line number)
+     * are included in the log entry when an exception is passed in the context during a log operation.
+     *
+     * @return void
+     *
+     * @throws \RuntimeException If the exception handling logic within the method fails or produces unexpected output.
+     */
     public function testExceptionInContextIsExpanded(): void {
         $written = [];
         $writer = new class($written) extends AbstractWriter {
