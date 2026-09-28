@@ -51,8 +51,6 @@ use const PHP_EOL;
 
 /**
  * Json File Writer
- *
- * @package Inane\Log\Writer
  */
 class JsonFileWriter extends AbstractWriter {
     /**

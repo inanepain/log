@@ -36,8 +36,6 @@ use function strtr;
 
 /**
  * Abstract Writer
- *
- * @package Inane\Log
  */
 abstract class AbstractWriter implements Writer {
     /**

@@ -33,8 +33,6 @@ use const STDOUT;
 
 /**
  * Stdout Writer
- *
- * @package Inane\Log\Writer
  */
 class StdoutWriter extends AbstractWriter {
     /**

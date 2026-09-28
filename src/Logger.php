@@ -31,8 +31,6 @@ use Psr\Log\LoggerTrait;
  * Logger
  *
  * A PSR-3 logger that delegates to one or more writers.
- *
- * @package Inane\Log
  */
 class Logger implements LoggerInterface {
     use LoggerTrait;

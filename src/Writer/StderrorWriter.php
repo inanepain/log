@@ -33,8 +33,6 @@ use const STDERR;
 
 /**
  * Standard Error Writer
- *
- * @package Inane\Log\Writer
  */
 class StderrorWriter extends AbstractWriter {
     /**

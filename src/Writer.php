@@ -26,8 +26,6 @@ namespace Inane\Log;
 
 /**
  * Writer Interface
- *
- * @package Inane\Log
  */
 interface Writer {
     /**
